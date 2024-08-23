@@ -8,23 +8,23 @@ espresso = "3.6.1"
 firebase = "33.2.0"
 firebaseCrashlyticsGradle = "3.0.2"
 googleServices = "4.4.2"
-gson = "2.11.0"
 hilt = "2.51.1"
 hiltNavigation = "1.2.0"
 junit = "4.13.2"
 junitAndroid = "1.2.1"
-kotlin = "1.9.24"
+kotlin = "2.0.20"
 kotlinCoroutines = "1.8.1"
 kotlinSerialization = "1.6.3"
-ksp = "1.9.24-1.0.20"
+ksp = "2.0.20-1.0.24"
 lifecycle = "2.8.4"
-navigation = "2.7.7"
+navigation = "2.8.0-rc01"
 okhttp = "4.12.0"
 room = "2.6.1"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 firebase-crashlytics-gradle = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsGradle" }
 google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
@@ -46,7 +46,6 @@ espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "esp
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
-gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
 hilt-navigation = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigation" }
