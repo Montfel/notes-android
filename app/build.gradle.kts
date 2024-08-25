@@ -1,7 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    id(libs.plugins.firebase.crashlytics.gradle.get().pluginId)
-    id(libs.plugins.google.services.get().pluginId)
     id(libs.plugins.hilt.get().pluginId)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
@@ -51,6 +49,7 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
     }
 }
@@ -64,9 +63,6 @@ dependencies {
     implementation(libs.core)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)

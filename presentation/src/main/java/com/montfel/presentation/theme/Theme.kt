@@ -1,4 +1,4 @@
-package com.montfel.notes.ui.theme
+package com.montfel.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
