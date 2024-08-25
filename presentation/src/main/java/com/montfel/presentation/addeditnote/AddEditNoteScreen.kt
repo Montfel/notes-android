@@ -8,13 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -30,9 +34,11 @@ import com.montfel.presentation.R
 import com.montfel.presentation.addeditnote.components.DatePickerDialogComponent
 import com.montfel.presentation.addeditnote.components.TextFieldComponent
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditNoteScreen(
-    noteId: Int? = null
+    noteId: Int? = null,
+    onBack: () -> Unit
 ) {
     val viewModel: AddEditNoteViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -41,15 +47,23 @@ fun AddEditNoteScreen(
         mutableStateOf(false)
     }
 
-    val text = if (noteId != null) {
-        R.string.edit_note
-    } else {
-        R.string.add_note
-    }
+    val text = stringResource(
+        id = if (noteId != null) {
+            R.string.edit_note
+        } else {
+            R.string.add_note
+        }
+    )
 
     LaunchedEffect(Unit) {
         noteId?.let {
-            viewModel.onEvent(AddEditNoteEvent.GetEditNoteById(it))
+            viewModel.onEvent(AddEditNoteEvent.GetNoteById(it))
+        }
+
+        viewModel.uiEvent.collect { event ->
+            when (event) {
+                AddEditNoteUiEvent.OnSaveNote -> onBack()
+            }
         }
     }
 
@@ -63,62 +77,76 @@ fun AddEditNoteScreen(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(vertical = 24.dp, horizontal = 32.dp)
-            .safeDrawingPadding()
-    ) {
-        Text(text = stringResource(id = text))
-
-        Spacer(modifier = Modifier.height(40.dp))
-
-        TextFieldComponent(
-            label = stringResource(id = R.string.title),
-            placeholder = "",
-            text = uiState.title,
-            onValueChange = { viewModel.onEvent(AddEditNoteEvent.OnEditNoteTitleChange(it)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        TextFieldComponent(
-            label = stringResource(id = R.string.description),
-            placeholder = "",
-            text = uiState.description,
-            onValueChange = { viewModel.onEvent(AddEditNoteEvent.OnEditNoteDescriptionChange(it)) },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        TextFieldComponent(
-            label = stringResource(id = R.string.due_date),
-            placeholder = "",
-            trailingIcon = {
-                Icon(imageVector = Icons.Default.DateRange, contentDescription = null)
-            },
-            enabled = false,
-            text = uiState.dueDate,
-            onValueChange = {},
-            modifier = Modifier
-                .fillMaxWidth()
-                .clickable {
-                    shouldOpenDateDialog = true
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = text)
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = null
+                        )
+                    }
                 }
-        )
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        Button(
-            onClick = { viewModel.onEvent(AddEditNoteEvent.OnAddEditNote) },
-            modifier = Modifier.fillMaxWidth()
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(8.dp)
         ) {
-            Text(text = stringResource(id = text))
+            TextFieldComponent(
+                label = stringResource(id = R.string.title),
+                placeholder = "",
+                text = uiState.title,
+                onValueChange = { viewModel.onEvent(AddEditNoteEvent.OnNoteTitleChange(it)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TextFieldComponent(
+                label = stringResource(id = R.string.description),
+                placeholder = "",
+                text = uiState.description,
+                onValueChange = { viewModel.onEvent(AddEditNoteEvent.OnNoteDescriptionChange(it)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            TextFieldComponent(
+                label = stringResource(id = R.string.due_date),
+                placeholder = "",
+                trailingIcon = {
+                    Icon(imageVector = Icons.Default.DateRange, contentDescription = null)
+                },
+                enabled = false,
+                text = uiState.dueDate,
+                onValueChange = {},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable {
+                        shouldOpenDateDialog = true
+                    }
+            )
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Button(
+                onClick = { viewModel.onEvent(AddEditNoteEvent.OnSaveNote) },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = text)
+            }
         }
     }
 }

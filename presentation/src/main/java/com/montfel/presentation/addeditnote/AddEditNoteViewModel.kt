@@ -7,8 +7,10 @@ import com.montfel.domain.repository.NoteRepository
 import com.montfel.presentation.util.formatDate
 import com.montfel.presentation.util.toUTCDate
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,16 +23,19 @@ class AddEditNoteViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AddEditNoteUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _uiEvent = Channel<AddEditNoteUiEvent>()
+    val uiEvent = _uiEvent.receiveAsFlow()
+
     private var dueTimestamp: Long = 0L
     private var currentNoteId: Int? = null
 
     fun onEvent(event: AddEditNoteEvent) {
         when (event) {
-            is AddEditNoteEvent.OnAddEditNote -> onAddNote()
-            is AddEditNoteEvent.OnDueDateChange -> onDueDateChange(event.dueDate)
-            is AddEditNoteEvent.OnEditNoteDescriptionChange -> onNoteDescriptionChange(event.description)
-            is AddEditNoteEvent.OnEditNoteTitleChange -> onNoteTitleChange(event.title)
-            is AddEditNoteEvent.GetEditNoteById -> getNoteById(event.noteId)
+            is AddEditNoteEvent.OnSaveNote -> onAddNote()
+            is AddEditNoteEvent.OnDueDateChange -> onDueDateChange(event.dueTimestamp)
+            is AddEditNoteEvent.OnNoteDescriptionChange -> onNoteDescriptionChange(event.description)
+            is AddEditNoteEvent.OnNoteTitleChange -> onNoteTitleChange(event.title)
+            is AddEditNoteEvent.GetNoteById -> getNoteById(event.noteId)
         }
     }
 
@@ -59,6 +64,8 @@ class AddEditNoteViewModel @Inject constructor(
                     dueDate = dueTimestamp
                 )
             )
+
+            _uiEvent.send(AddEditNoteUiEvent.OnSaveNote)
         }
     }
 

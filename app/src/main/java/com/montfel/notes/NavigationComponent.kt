@@ -22,7 +22,11 @@ fun NavigationComponent() {
 
         composable<Screen.AddEditNote> {
             val (noteId) = it.toRoute<Screen.AddEditNote>()
-            AddEditNoteScreen(noteId)
+
+            AddEditNoteScreen(
+                noteId = noteId,
+                onBack = navController::popBackStack
+            )
         }
     }
 }
