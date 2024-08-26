@@ -3,7 +3,8 @@ package com.montfel.presentation.addeditnote
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.montfel.domain.model.Note
-import com.montfel.domain.repository.NoteRepository
+import com.montfel.domain.usecase.AddNoteUseCase
+import com.montfel.domain.usecase.GetNoteByIdUseCase
 import com.montfel.presentation.notification.NotesAlarmManager
 import com.montfel.presentation.util.formatDate
 import com.montfel.presentation.util.toUTCDate
@@ -18,7 +19,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
-    private val noteRepository: NoteRepository,
+    private val getNoteByIdUseCase: GetNoteByIdUseCase,
+    private val addNoteUseCase: AddNoteUseCase,
     private val notesAlarmManager: NotesAlarmManager
 ) : ViewModel() {
 
@@ -44,7 +46,7 @@ class AddEditNoteViewModel @Inject constructor(
     private fun getNoteById(noteId: Int) {
         viewModelScope.launch {
             currentNoteId = noteId
-            val note = noteRepository.getNoteById(noteId)
+            val note = getNoteByIdUseCase(noteId)
 
             _uiState.update {
                 it.copy(
@@ -65,7 +67,7 @@ class AddEditNoteViewModel @Inject constructor(
                 dueDate = dueTimestamp
             )
 
-            noteRepository.addNote(note)
+            addNoteUseCase(note)
 
             notesAlarmManager.setUpAlarm(note)
 

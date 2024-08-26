@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.montfel.data.util.Constants
 
 @Entity(tableName = Constants.NOTE_TABLE)
-data class NoteEntity(
+internal data class NoteEntity(
     @PrimaryKey
     val id: Int? = null,
     val title: String,

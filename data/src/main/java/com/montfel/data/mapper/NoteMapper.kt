@@ -3,7 +3,7 @@ package com.montfel.data.mapper
 import com.montfel.data.model.entity.NoteEntity
 import com.montfel.domain.model.Note
 
-fun NoteEntity.toNote(): Note {
+internal fun NoteEntity.toNote(): Note {
     return Note(
         id = id,
         title = title,
@@ -12,7 +12,7 @@ fun NoteEntity.toNote(): Note {
     )
 }
 
-fun Note.toNoteEntity(): NoteEntity {
+internal fun Note.toNoteEntity(): NoteEntity {
     return NoteEntity(
         id = id,
         title = title,

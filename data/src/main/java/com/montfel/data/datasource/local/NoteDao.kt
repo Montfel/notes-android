@@ -9,7 +9,7 @@ import com.montfel.data.model.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface NoteDao {
+internal interface NoteDao {
 
     @Query("SELECT * FROM note_table ORDER BY dueDate ASC")
     fun getAllNotes(): Flow<List<NoteEntity>>

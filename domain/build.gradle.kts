@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
 }
 
 java {
@@ -9,7 +10,8 @@ java {
 }
 
 dependencies {
-    implementation(libs.hilt.compiler)
+    implementation(libs.hilt.core)
+    ksp(libs.hilt.compiler)
     implementation(libs.kotlin.coroutines)
     implementation(libs.kotlin.serialization.json)
 }

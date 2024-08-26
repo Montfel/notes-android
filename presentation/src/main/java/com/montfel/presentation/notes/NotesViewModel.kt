@@ -3,7 +3,8 @@ package com.montfel.presentation.notes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.montfel.domain.model.Note
-import com.montfel.domain.repository.NoteRepository
+import com.montfel.domain.usecase.DeleteNoteUseCase
+import com.montfel.domain.usecase.GetAllNotesUseCase
 import com.montfel.presentation.notification.NotesAlarmManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotesViewModel @Inject constructor(
-    private val noteRepository: NoteRepository,
+    private val getAllNotesUseCase: GetAllNotesUseCase,
+    private val deleteNoteUseCase: DeleteNoteUseCase,
     private val notesAlarmManager: NotesAlarmManager
 ): ViewModel() {
 
@@ -34,7 +36,7 @@ class NotesViewModel @Inject constructor(
 
     private fun getAllNotes() {
         viewModelScope.launch {
-            noteRepository.getAllNotes().distinctUntilChanged().collect { notes ->
+            getAllNotesUseCase().distinctUntilChanged().collect { notes ->
                 _uiState.update {
                     it.copy(notes = notes)
                 }
@@ -44,7 +46,7 @@ class NotesViewModel @Inject constructor(
 
     private fun deleteNote(note: Note) {
         viewModelScope.launch {
-            noteRepository.deleteNote(note)
+            deleteNoteUseCase(note)
             notesAlarmManager.cancelAlarm(note)
         }
     }
