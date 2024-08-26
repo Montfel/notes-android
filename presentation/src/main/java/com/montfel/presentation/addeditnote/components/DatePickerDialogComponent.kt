@@ -1,8 +1,10 @@
 package com.montfel.presentation.addeditnote.components
 
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -25,20 +27,31 @@ fun DatePickerDialogComponent(
     }
 
     DatePickerDialog(
+        colors = DatePickerDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+        ),
         onDismissRequest = onCancel,
         confirmButton = {
             TextButton(
                 onClick = { datePickerState.selectedDateMillis?.let(onConfirm) },
                 enabled = confirmEnabled
             ) {
-                Text(text = stringResource(id = R.string.confirm))
+                Text(
+                    text = stringResource(id = R.string.confirm),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             }
         },
         dismissButton = {
             TextButton(
                 onClick = onCancel
             ) {
-                Text(text = stringResource(id = R.string.cancel))
+                Text(
+                    text = stringResource(id = R.string.cancel),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             }
         }
     ) {

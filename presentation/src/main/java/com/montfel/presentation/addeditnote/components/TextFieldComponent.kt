@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,7 +18,6 @@ fun TextFieldComponent(
     text: String,
     modifier: Modifier = Modifier,
     label: String? = null,
-    placeholder: String = "",
     singleLine: Boolean = true,
     enabled: Boolean = true,
     trailingIcon: @Composable (() -> Unit)? = null,
@@ -31,6 +29,8 @@ fun TextFieldComponent(
         label?.let {
             Text(
                 text = it,
+                style = MaterialTheme.typography.labelLarge,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 
@@ -38,25 +38,19 @@ fun TextFieldComponent(
             value = text,
             onValueChange = onValueChange,
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                unfocusedBorderColor = Color.Transparent,
-                cursorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                focusedContainerColor = MaterialTheme.colorScheme.surface,
-                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-                focusedPlaceholderColor = White.copy(alpha = 0.2f),
-                unfocusedPlaceholderColor = White.copy(alpha = 0.2f),
-                disabledContainerColor = MaterialTheme.colorScheme.surface,
-                disabledTextColor = White,
-                disabledPlaceholderColor = White.copy(alpha = 0.2f),
-                disabledBorderColor = Color.Transparent,
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                focusedTextColor = Color.Black,
+                unfocusedTextColor = Color.Black,
+                disabledContainerColor = Color.White,
+                disabledTextColor = Color.Black,
+                disabledBorderColor = MaterialTheme.colorScheme.primary
             ),
             singleLine = singleLine,
             trailingIcon = trailingIcon,
-            placeholder = {
-                Text(
-                    text = placeholder,
-                )
-            },
             enabled = enabled,
             shape = RoundedCornerShape(12.dp),
             modifier = modifier.height(60.dp),

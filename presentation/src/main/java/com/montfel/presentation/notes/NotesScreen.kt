@@ -11,9 +11,11 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -24,7 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.montfel.domain.model.Note
 import com.montfel.presentation.R
-import com.montfel.presentation.notes.components.NoteItem
+import com.montfel.presentation.notes.components.NoteCard
 import com.montfel.presentation.theme.NotesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,15 +42,27 @@ fun NotesScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(text = stringResource(id = R.string.app_name))
-                }
+                    Text(
+                        text = stringResource(id = R.string.app_name),
+                        style = MaterialTheme.typography.headlineMedium
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                )
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onAddNote) {
+            FloatingActionButton(
+                onClick = onAddNote,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                containerColor = MaterialTheme.colorScheme.primary
+            ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
         },
+        containerColor = MaterialTheme.colorScheme.background,
         modifier = Modifier
             .fillMaxSize()
             .navigationBarsPadding()
@@ -61,7 +75,7 @@ fun NotesScreen(
                 .fillMaxSize()
         ) {
             items(uiState.notes) {
-                NoteItem(
+                NoteCard(
                     note = it,
                     onEdit = onEditNote,
                     onDelete = { note -> viewModel.onEvent(NotesEvent.DeleteNote(note)) }
