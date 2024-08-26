@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.montfel.domain.model.Note
 import com.montfel.domain.repository.NoteRepository
+import com.montfel.presentation.notification.NotesAlarmManager
 import com.montfel.presentation.util.formatDate
 import com.montfel.presentation.util.toUTCDate
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddEditNoteViewModel @Inject constructor(
-    private val noteRepository: NoteRepository
+    private val noteRepository: NoteRepository,
+    private val notesAlarmManager: NotesAlarmManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddEditNoteUiState())
@@ -56,14 +58,16 @@ class AddEditNoteViewModel @Inject constructor(
 
     private fun onAddNote() {
         viewModelScope.launch {
-            noteRepository.addNote(
-                Note(
-                    id = currentNoteId,
-                    title = uiState.value.title,
-                    description = uiState.value.description,
-                    dueDate = dueTimestamp
-                )
+            val note = Note(
+                id = currentNoteId,
+                title = uiState.value.title,
+                description = uiState.value.description,
+                dueDate = dueTimestamp
             )
+
+            noteRepository.addNote(note)
+
+            notesAlarmManager.setUpAlarm(note)
 
             _uiEvent.send(AddEditNoteUiEvent.OnSaveNote)
         }

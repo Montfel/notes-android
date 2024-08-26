@@ -29,11 +29,11 @@ import com.montfel.presentation.theme.NotesTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+fun NotesScreen(
     onAddNote: () -> Unit,
     onEditNote: (Note) -> Unit,
 ) {
-    val viewModel: HomeViewModel = hiltViewModel()
+    val viewModel: NotesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     Scaffold(
@@ -64,7 +64,7 @@ fun HomeScreen(
                 NoteItem(
                     note = it,
                     onEdit = onEditNote,
-                    onDelete = { note -> viewModel.onEvent(HomeEvent.DeleteNote(note)) }
+                    onDelete = { note -> viewModel.onEvent(NotesEvent.DeleteNote(note)) }
                 )
             }
         }
@@ -73,9 +73,9 @@ fun HomeScreen(
 
 @Preview
 @Composable
-private fun HomeScreenPreview() {
+private fun NotesScreenPreview() {
     NotesTheme {
-        HomeScreen(
+        NotesScreen(
             onAddNote = { },
             onEditNote = { }
         )
