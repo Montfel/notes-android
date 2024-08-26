@@ -18,6 +18,14 @@ fun Long.toUTCDate(): Date {
     return calendar.time
 }
 
+fun Long.minusOneDay(): Long {
+    val calendar = Calendar.getInstance().apply {
+        time = Date(this@minusOneDay)
+        set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 1)
+    }
+    return calendar.time.time
+}
+
 fun Date.formatDate(): String {
     val calendar = Calendar.getInstance(Locale.getDefault()).apply { time = this@formatDate }
     val date = calendar.time
