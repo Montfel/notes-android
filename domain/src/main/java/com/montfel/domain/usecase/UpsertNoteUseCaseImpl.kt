@@ -4,10 +4,10 @@ import com.montfel.domain.model.Note
 import com.montfel.domain.repository.NoteRepository
 import javax.inject.Inject
 
-internal class AddNoteUseCaseImpl @Inject constructor(
+internal class UpsertNoteUseCaseImpl @Inject constructor(
     private val noteRepository: NoteRepository
-): AddNoteUseCase {
+): UpsertNoteUseCase {
     override suspend fun invoke(note: Note) {
-        noteRepository.addNote(note = note)
+        noteRepository.upsertNote(note = note)
     }
 }

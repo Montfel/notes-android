@@ -8,7 +8,7 @@ sealed interface Screen {
     data object Notes : Screen
 
     @Serializable
-    data class AddEditNote(
+    data class UpsertNote(
         val noteId: Int? = null
     ) : Screen
 }

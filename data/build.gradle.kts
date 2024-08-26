@@ -50,7 +50,7 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(platform(libs.okhttp.bom))
     implementation(libs.bundles.okhttp)
-    implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization.json)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
@@ -58,6 +58,11 @@ dependencies {
     implementation(libs.room.runtime)
 
     testImplementation(libs.junit.test)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.truth)
+
     androidTestImplementation(libs.junit.test.android)
+    androidTestImplementation(libs.kotlin.coroutines.test)
     androidTestImplementation(libs.espresso)
+    androidTestImplementation(libs.truth)
 }

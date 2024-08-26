@@ -12,6 +12,6 @@ java {
 dependencies {
     implementation(libs.hilt.core)
     ksp(libs.hilt.compiler)
-    implementation(libs.kotlin.coroutines)
+    implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization.json)
 }

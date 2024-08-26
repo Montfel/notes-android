@@ -2,6 +2,6 @@ package com.montfel.domain.usecase
 
 import com.montfel.domain.model.Note
 
-interface AddNoteUseCase {
+interface UpsertNoteUseCase {
     suspend operator fun invoke(note: Note)
 }

@@ -1,7 +1,7 @@
 package com.montfel.domain.di
 
-import com.montfel.domain.usecase.AddNoteUseCase
-import com.montfel.domain.usecase.AddNoteUseCaseImpl
+import com.montfel.domain.usecase.UpsertNoteUseCase
+import com.montfel.domain.usecase.UpsertNoteUseCaseImpl
 import com.montfel.domain.usecase.DeleteNoteUseCase
 import com.montfel.domain.usecase.DeleteNoteUseCaseImpl
 import com.montfel.domain.usecase.GetAllNotesUseCase
@@ -17,9 +17,9 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 internal abstract class DomainModule {
     @Binds
-    abstract fun bindAddNoteUseCase(
-        addNoteUseCaseImpl: AddNoteUseCaseImpl
-    ): AddNoteUseCase
+    abstract fun bindUpsertNoteUseCase(
+        upsertNoteUseCaseImpl: UpsertNoteUseCaseImpl
+    ): UpsertNoteUseCase
 
     @Binds
     abstract fun bindDeleteNoteUseCase(

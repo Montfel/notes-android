@@ -1,4 +1,4 @@
-package com.montfel.presentation.addeditnote
+package com.montfel.presentation.upsertnote
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -33,16 +33,16 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.montfel.presentation.R
-import com.montfel.presentation.addeditnote.components.DatePickerDialogComponent
-import com.montfel.presentation.addeditnote.components.TextFieldComponent
+import com.montfel.presentation.upsertnote.components.DatePickerDialogComponent
+import com.montfel.presentation.upsertnote.components.TextFieldComponent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditNoteScreen(
+fun UpsertNoteScreen(
     noteId: Int? = null,
     onBack: () -> Unit
 ) {
-    val viewModel: AddEditNoteViewModel = hiltViewModel()
+    val viewModel: UpsertNoteViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     var shouldOpenDateDialog by remember {
@@ -59,12 +59,12 @@ fun AddEditNoteScreen(
 
     LaunchedEffect(Unit) {
         noteId?.let {
-            viewModel.onEvent(AddEditNoteEvent.GetNoteById(it))
+            viewModel.onEvent(UpsertNoteEvent.GetNoteById(it))
         }
 
         viewModel.uiEvent.collect { event ->
             when (event) {
-                AddEditNoteUiEvent.OnSaveNote -> onBack()
+                UpsertNoteUiEvent.OnSaveNote -> onBack()
             }
         }
     }
@@ -73,7 +73,7 @@ fun AddEditNoteScreen(
         DatePickerDialogComponent(
             onConfirm = {
                 shouldOpenDateDialog = false
-                viewModel.onEvent(AddEditNoteEvent.OnDueDateChange(it))
+                viewModel.onEvent(UpsertNoteEvent.OnDueDateChange(it))
             },
             onCancel = { shouldOpenDateDialog = false },
         )
@@ -117,7 +117,7 @@ fun AddEditNoteScreen(
             TextFieldComponent(
                 label = stringResource(id = R.string.title),
                 text = uiState.title,
-                onValueChange = { viewModel.onEvent(AddEditNoteEvent.OnNoteTitleChange(it)) },
+                onValueChange = { viewModel.onEvent(UpsertNoteEvent.OnNoteTitleChange(it)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -127,7 +127,7 @@ fun AddEditNoteScreen(
                 label = stringResource(id = R.string.description),
                 singleLine = false,
                 text = uiState.description,
-                onValueChange = { viewModel.onEvent(AddEditNoteEvent.OnNoteDescriptionChange(it)) },
+                onValueChange = { viewModel.onEvent(UpsertNoteEvent.OnNoteDescriptionChange(it)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
@@ -155,7 +155,7 @@ fun AddEditNoteScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { viewModel.onEvent(AddEditNoteEvent.OnSaveNote) },
+                onClick = { viewModel.onEvent(UpsertNoteEvent.OnUpsertNote) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary

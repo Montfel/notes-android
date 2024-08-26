@@ -1,4 +1,4 @@
-package com.montfel.presentation.addeditnote.components
+package com.montfel.presentation.upsertnote.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

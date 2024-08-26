@@ -1,9 +1,9 @@
-package com.montfel.presentation.addeditnote
+package com.montfel.presentation.upsertnote
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.montfel.domain.model.Note
-import com.montfel.domain.usecase.AddNoteUseCase
+import com.montfel.domain.usecase.UpsertNoteUseCase
 import com.montfel.domain.usecase.GetNoteByIdUseCase
 import com.montfel.presentation.notification.NotesAlarmManager
 import com.montfel.presentation.util.formatDate
@@ -18,35 +18,36 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditNoteViewModel @Inject constructor(
+class UpsertNoteViewModel @Inject constructor(
     private val getNoteByIdUseCase: GetNoteByIdUseCase,
-    private val addNoteUseCase: AddNoteUseCase,
+    private val upsertNoteUseCase: UpsertNoteUseCase,
     private val notesAlarmManager: NotesAlarmManager
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(AddEditNoteUiState())
+    private val _uiState = MutableStateFlow(UpsertNoteUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _uiEvent = Channel<AddEditNoteUiEvent>()
+    private val _uiEvent = Channel<UpsertNoteUiEvent>()
     val uiEvent = _uiEvent.receiveAsFlow()
 
     private var dueTimestamp: Long = 0L
     private var currentNoteId: Int? = null
 
-    fun onEvent(event: AddEditNoteEvent) {
+    fun onEvent(event: UpsertNoteEvent) {
         when (event) {
-            is AddEditNoteEvent.OnSaveNote -> onAddNote()
-            is AddEditNoteEvent.OnDueDateChange -> onDueDateChange(event.dueTimestamp)
-            is AddEditNoteEvent.OnNoteDescriptionChange -> onNoteDescriptionChange(event.description)
-            is AddEditNoteEvent.OnNoteTitleChange -> onNoteTitleChange(event.title)
-            is AddEditNoteEvent.GetNoteById -> getNoteById(event.noteId)
+            is UpsertNoteEvent.OnUpsertNote -> onUpsertNote()
+            is UpsertNoteEvent.OnDueDateChange -> onDueDateChange(event.dueTimestamp)
+            is UpsertNoteEvent.OnNoteDescriptionChange -> onNoteDescriptionChange(event.description)
+            is UpsertNoteEvent.OnNoteTitleChange -> onNoteTitleChange(event.title)
+            is UpsertNoteEvent.GetNoteById -> getNoteById(event.noteId)
         }
     }
 
     private fun getNoteById(noteId: Int) {
         viewModelScope.launch {
-            currentNoteId = noteId
             val note = getNoteByIdUseCase(noteId)
+            currentNoteId = noteId
+            dueTimestamp = note.dueDate
 
             _uiState.update {
                 it.copy(
@@ -58,7 +59,7 @@ class AddEditNoteViewModel @Inject constructor(
         }
     }
 
-    private fun onAddNote() {
+    private fun onUpsertNote() {
         viewModelScope.launch {
             val note = Note(
                 id = currentNoteId,
@@ -67,11 +68,11 @@ class AddEditNoteViewModel @Inject constructor(
                 dueDate = dueTimestamp
             )
 
-            addNoteUseCase(note)
+            upsertNoteUseCase(note)
 
             notesAlarmManager.setUpAlarm(note)
 
-            _uiEvent.send(AddEditNoteUiEvent.OnSaveNote)
+            _uiEvent.send(UpsertNoteUiEvent.OnSaveNote)
         }
     }
 

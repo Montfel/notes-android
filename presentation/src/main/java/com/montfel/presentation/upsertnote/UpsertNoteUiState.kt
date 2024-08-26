@@ -1,6 +1,6 @@
-package com.montfel.presentation.addeditnote
+package com.montfel.presentation.upsertnote
 
-data class AddEditNoteUiState(
+data class UpsertNoteUiState(
     val title: String = "",
     val description: String = "",
     val dueDate: String = "",
