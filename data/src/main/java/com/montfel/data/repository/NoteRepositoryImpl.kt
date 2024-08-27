@@ -1,6 +1,6 @@
 package com.montfel.data.repository
 
-import com.montfel.data.datasource.local.NotesDatabase
+import com.montfel.data.datasource.local.NoteDao
 import com.montfel.data.mapper.toNote
 import com.montfel.data.mapper.toNoteEntity
 import com.montfel.domain.model.Note
@@ -10,23 +10,23 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 internal class NoteRepositoryImpl @Inject constructor(
-    private val database: NotesDatabase
+    private val noteDao: NoteDao
 ) : NoteRepository {
     override fun getAllNotes(): Flow<List<Note>> {
-        return database.noteDao().getAllNotes().map { notesEntity ->
+        return noteDao.getAllNotes().map { notesEntity ->
             notesEntity.map { noteEntity -> noteEntity.toNote() }
         }
     }
 
     override suspend fun getNoteById(noteId: Int): Note {
-        return database.noteDao().getNoteById(noteId).toNote()
+        return noteDao.getNoteById(noteId).toNote()
     }
 
     override suspend fun upsertNote(note: Note) {
-        database.noteDao().upsertNote(note.toNoteEntity())
+        noteDao.upsertNote(note.toNoteEntity())
     }
 
     override suspend fun deleteNote(note: Note) {
-        database.noteDao().deleteNote(note.toNoteEntity())
+        noteDao.deleteNote(note.toNoteEntity())
     }
 }

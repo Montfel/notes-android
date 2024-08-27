@@ -32,8 +32,7 @@ import com.montfel.presentation.theme.NotesTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesScreen(
-    onAddNote: () -> Unit,
-    onEditNote: (Note) -> Unit,
+    onUpsertNote: (Note?) -> Unit,
 ) {
     val viewModel: NotesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -55,7 +54,7 @@ fun NotesScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onAddNote,
+                onClick = { onUpsertNote(null) },
                 contentColor = MaterialTheme.colorScheme.onPrimary,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
@@ -77,7 +76,7 @@ fun NotesScreen(
             items(uiState.notes) {
                 NoteCard(
                     note = it,
-                    onEdit = onEditNote,
+                    onEdit = onUpsertNote,
                     onDelete = { note -> viewModel.onEvent(NotesEvent.DeleteNote(note)) }
                 )
             }
@@ -90,8 +89,7 @@ fun NotesScreen(
 private fun NotesScreenPreview() {
     NotesTheme {
         NotesScreen(
-            onAddNote = { },
-            onEditNote = { }
+            onUpsertNote = { }
         )
     }
 }

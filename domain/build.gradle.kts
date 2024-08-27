@@ -14,4 +14,9 @@ dependencies {
     ksp(libs.hilt.compiler)
     implementation(libs.kotlin.coroutines.core)
     implementation(libs.kotlin.serialization.json)
+
+    testImplementation(libs.junit.test)
+    testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.truth)
 }

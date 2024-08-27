@@ -15,8 +15,7 @@ fun NavigationComponent() {
     NavHost(navController = navController, startDestination = Screen.Notes) {
         composable<Screen.Notes> {
             NotesScreen(
-                onAddNote = { navController.navigate(Screen.UpsertNote()) },
-                onEditNote = { note -> navController.navigate(Screen.UpsertNote(note.id)) }
+                onUpsertNote = { note -> navController.navigate(Screen.UpsertNote(note?.id)) }
             )
         }
 

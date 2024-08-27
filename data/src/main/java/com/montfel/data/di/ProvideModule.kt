@@ -26,4 +26,8 @@ internal object ProvideModule {
             Constants.NOTES_DATABASE
         ).build()
     }
+
+    @Provides
+    @Singleton
+    fun provideNoteDao(notesDatabase: NotesDatabase) = notesDatabase.noteDao()
 }

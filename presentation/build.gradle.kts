@@ -50,7 +50,6 @@ dependencies {
     implementation(projects.domain)
 
     implementation(libs.core)
-    implementation(libs.coil)
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation)
     ksp(libs.hilt.compiler)
@@ -61,5 +60,4 @@ dependencies {
 
     testImplementation(libs.junit.test)
     androidTestImplementation(libs.junit.test.android)
-    androidTestImplementation(libs.espresso)
 }
