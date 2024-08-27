@@ -17,22 +17,22 @@ import androidx.compose.ui.unit.dp
 fun TextFieldComponent(
     text: String,
     modifier: Modifier = Modifier,
-    label: String? = null,
+    label: String,
     singleLine: Boolean = true,
     enabled: Boolean = true,
+    hasError: Boolean = false,
+    errorMessage: String = "",
     trailingIcon: @Composable (() -> Unit)? = null,
     onValueChange: (String) -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        label?.let {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onBackground
+        )
 
         OutlinedTextField(
             value = text,
@@ -54,6 +54,12 @@ fun TextFieldComponent(
             enabled = enabled,
             shape = RoundedCornerShape(12.dp),
             modifier = modifier.height(60.dp),
+        )
+
+        Text(
+            text = if (hasError) errorMessage else "",
+            style = MaterialTheme.typography.labelMedium,
+            color = Color.Red
         )
     }
 }

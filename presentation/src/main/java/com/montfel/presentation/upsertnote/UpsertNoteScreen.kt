@@ -136,13 +136,15 @@ fun UpsertNoteScreen(
             TextFieldComponent(
                 label = stringResource(id = R.string.title),
                 text = uiState.title,
+                errorMessage = stringResource(id = R.string.title_error_message),
+                hasError = !uiState.titleSuccessful,
                 onValueChange = { onEvent(UpsertNoteEvent.OnNoteTitleChange(it)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .testTag(TestTags.TITLE_TEXT_FIELD)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             TextFieldComponent(
                 label = stringResource(id = R.string.description),
@@ -155,7 +157,7 @@ fun UpsertNoteScreen(
                     .testTag(TestTags.DESCRIPTION_TEXT_FIELD)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
             TextFieldComponent(
                 label = stringResource(id = R.string.due_date),
@@ -163,7 +165,9 @@ fun UpsertNoteScreen(
                     Icon(imageVector = Icons.Default.DateRange, contentDescription = null)
                 },
                 enabled = false,
+                errorMessage = stringResource(id = R.string.due_date_error_message),
                 text = uiState.dueDate,
+                hasError = !uiState.dueDateSuccessful,
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
@@ -172,8 +176,6 @@ fun UpsertNoteScreen(
                         shouldOpenDateDialog = true
                     }
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
 
             Spacer(modifier = Modifier.weight(1f))
 

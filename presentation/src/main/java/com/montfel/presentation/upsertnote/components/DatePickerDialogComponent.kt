@@ -5,6 +5,7 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
@@ -14,6 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.montfel.presentation.R
+import com.montfel.presentation.util.minusOneDay
+import com.montfel.presentation.util.toUTCLong
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +25,13 @@ fun DatePickerDialogComponent(
     onConfirm: (Long) -> Unit,
     onCancel: () -> Unit,
 ) {
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(
+        selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return utcTimeMillis >= Date().toUTCLong().minusOneDay()
+            }
+        }
+    )
     val confirmEnabled by remember {
         derivedStateOf { datePickerState.selectedDateMillis != null }
     }

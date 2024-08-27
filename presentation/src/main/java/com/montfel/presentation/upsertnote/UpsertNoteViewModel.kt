@@ -3,11 +3,13 @@ package com.montfel.presentation.upsertnote
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.montfel.domain.model.Note
-import com.montfel.domain.usecase.UpsertNoteUseCase
 import com.montfel.domain.usecase.GetNoteByIdUseCase
+import com.montfel.domain.usecase.UpsertNoteUseCase
 import com.montfel.presentation.notification.NotesAlarmManager
 import com.montfel.presentation.util.formatDate
+import com.montfel.presentation.util.minusOneDay
 import com.montfel.presentation.util.toUTCDate
+import com.montfel.presentation.util.toUTCLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Date
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,7 +63,11 @@ class UpsertNoteViewModel @Inject constructor(
     }
 
     private fun onUpsertNote() {
-        viewModelScope.launch {
+        val titleSuccessful = uiState.value.title.isNotBlank()
+        val dueDateSuccessful =
+            uiState.value.dueDate.isNotBlank() && dueTimestamp >= Date().toUTCLong().minusOneDay()
+
+        if (titleSuccessful && dueDateSuccessful) {
             val note = Note(
                 id = currentNoteId,
                 title = uiState.value.title,
@@ -68,17 +75,29 @@ class UpsertNoteViewModel @Inject constructor(
                 dueDate = dueTimestamp
             )
 
-            upsertNoteUseCase(note)
+            viewModelScope.launch {
+                upsertNoteUseCase(note)
 
-            notesAlarmManager.setUpAlarm(note)
+                notesAlarmManager.setUpAlarm(note)
 
-            _uiEvent.send(UpsertNoteUiEvent.OnSaveNote)
+                _uiEvent.send(UpsertNoteUiEvent.OnSaveNote)
+            }
+        } else {
+            _uiState.update {
+                it.copy(
+                    titleSuccessful = titleSuccessful,
+                    dueDateSuccessful = dueDateSuccessful
+                )
+            }
         }
     }
 
     private fun onNoteTitleChange(title: String) {
         _uiState.update {
-            it.copy(title = title)
+            it.copy(
+                title = title,
+                titleSuccessful = title.isNotBlank()
+            )
         }
     }
 
@@ -92,7 +111,10 @@ class UpsertNoteViewModel @Inject constructor(
         this.dueTimestamp = dueTimestamp
 
         _uiState.update {
-            it.copy(dueDate = dueTimestamp.toUTCDate().formatDate())
+            it.copy(
+                dueDate = dueTimestamp.toUTCDate().formatDate(),
+                dueDateSuccessful = dueTimestamp >= Date().toUTCLong().minusOneDay()
+            )
         }
     }
 }

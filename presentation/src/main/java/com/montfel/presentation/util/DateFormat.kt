@@ -18,6 +18,18 @@ fun Long.toUTCDate(): Date {
     return calendar.time
 }
 
+fun Date.toUTCLong(): Long {
+    val utcTimeZone = TimeZone.getTimeZone("UTC")
+    val calendar = Calendar.getInstance(utcTimeZone).apply {
+        time = this@toUTCLong
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        timeZone = TimeZone.getDefault()
+    }
+    return calendar.time.time
+}
+
 fun Long.minusOneDay(): Long {
     val calendar = Calendar.getInstance().apply {
         time = Date(this@minusOneDay)
