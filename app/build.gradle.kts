@@ -18,7 +18,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.montfel.notes.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -70,6 +70,13 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
     implementation(libs.navigation)
 
+    debugImplementation(libs.compose.ui.test.manifest)
+
     testImplementation(libs.junit.test)
+    androidTestImplementation(libs.espresso)
     androidTestImplementation(libs.junit.test.android)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.hilt.testing)
+    kspAndroidTest(libs.hilt.compiler)
 }

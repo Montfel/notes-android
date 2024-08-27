@@ -5,6 +5,7 @@ import androidx.room.RoomDatabase
 import com.montfel.data.model.entity.NoteEntity
 
 @Database(
+    exportSchema = false,
     entities = [NoteEntity::class],
     version = 1
 )

@@ -5,8 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.montfel.presentation.upsertnote.UpsertNoteScreen
-import com.montfel.presentation.notes.NotesScreen
+import com.montfel.presentation.upsertnote.UpsertNoteRoute
+import com.montfel.presentation.notes.NotesRoute
 
 @Composable
 fun NavigationComponent() {
@@ -14,7 +14,7 @@ fun NavigationComponent() {
 
     NavHost(navController = navController, startDestination = Screen.Notes) {
         composable<Screen.Notes> {
-            NotesScreen(
+            NotesRoute(
                 onUpsertNote = { note -> navController.navigate(Screen.UpsertNote(note?.id)) }
             )
         }
@@ -22,7 +22,7 @@ fun NavigationComponent() {
         composable<Screen.UpsertNote> {
             val (noteId) = it.toRoute<Screen.UpsertNote>()
 
-            UpsertNoteScreen(
+            UpsertNoteRoute(
                 noteId = noteId,
                 onBack = navController::popBackStack
             )

@@ -28,34 +28,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.montfel.presentation.R
+import com.montfel.presentation.theme.NotesTheme
 import com.montfel.presentation.upsertnote.components.DatePickerDialogComponent
 import com.montfel.presentation.upsertnote.components.TextFieldComponent
+import com.montfel.presentation.util.TestTags
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpsertNoteScreen(
+fun UpsertNoteRoute(
     noteId: Int? = null,
     onBack: () -> Unit
 ) {
     val viewModel: UpsertNoteViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-
-    var shouldOpenDateDialog by remember {
-        mutableStateOf(false)
-    }
-
-    val text = stringResource(
-        id = if (noteId != null) {
-            R.string.edit_note
-        } else {
-            R.string.add_note
-        }
-    )
 
     LaunchedEffect(Unit) {
         noteId?.let {
@@ -69,11 +60,39 @@ fun UpsertNoteScreen(
         }
     }
 
+    UpsertNoteScreen(
+        noteId = noteId,
+        onBack = onBack,
+        uiState = uiState,
+        onEvent = viewModel::onEvent
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UpsertNoteScreen(
+    noteId: Int?,
+    onBack: () -> Unit,
+    uiState: UpsertNoteUiState,
+    onEvent: (UpsertNoteEvent) -> Unit
+) {
+    val text = stringResource(
+        id = if (noteId != null) {
+            R.string.edit_note
+        } else {
+            R.string.add_note
+        }
+    )
+
+    var shouldOpenDateDialog by remember {
+        mutableStateOf(false)
+    }
+
     if (shouldOpenDateDialog) {
         DatePickerDialogComponent(
             onConfirm = {
                 shouldOpenDateDialog = false
-                viewModel.onEvent(UpsertNoteEvent.OnDueDateChange(it))
+                onEvent(UpsertNoteEvent.OnDueDateChange(it))
             },
             onCancel = { shouldOpenDateDialog = false },
         )
@@ -117,8 +136,10 @@ fun UpsertNoteScreen(
             TextFieldComponent(
                 label = stringResource(id = R.string.title),
                 text = uiState.title,
-                onValueChange = { viewModel.onEvent(UpsertNoteEvent.OnNoteTitleChange(it)) },
-                modifier = Modifier.fillMaxWidth()
+                onValueChange = { onEvent(UpsertNoteEvent.OnNoteTitleChange(it)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .testTag(TestTags.TITLE_TEXT_FIELD)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -127,10 +148,11 @@ fun UpsertNoteScreen(
                 label = stringResource(id = R.string.description),
                 singleLine = false,
                 text = uiState.description,
-                onValueChange = { viewModel.onEvent(UpsertNoteEvent.OnNoteDescriptionChange(it)) },
+                onValueChange = { onEvent(UpsertNoteEvent.OnNoteDescriptionChange(it)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
+                    .testTag(TestTags.DESCRIPTION_TEXT_FIELD)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -145,6 +167,7 @@ fun UpsertNoteScreen(
                 onValueChange = {},
                 modifier = Modifier
                     .fillMaxWidth()
+                    .testTag(TestTags.DUE_DATE_TEXT_FIELD)
                     .clickable {
                         shouldOpenDateDialog = true
                     }
@@ -155,7 +178,7 @@ fun UpsertNoteScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             Button(
-                onClick = { viewModel.onEvent(UpsertNoteEvent.OnUpsertNote) },
+                onClick = { onEvent(UpsertNoteEvent.OnUpsertNote) },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
@@ -163,10 +186,23 @@ fun UpsertNoteScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
-                    text = text,
+                    text = stringResource(id = R.string.save_note),
                     style = MaterialTheme.typography.labelLarge,
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun UpsertScreenPreview() {
+    NotesTheme {
+        UpsertNoteScreen(
+            noteId = 1,
+            onBack = {},
+            uiState = UpsertNoteUiState(),
+            onEvent = {}
+        )
     }
 }

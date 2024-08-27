@@ -58,6 +58,10 @@ dependencies {
     implementation(libs.bundles.lifecycle)
     implementation(libs.kotlin.serialization.json)
 
+    debugImplementation(libs.compose.ui.test.manifest)
+
     testImplementation(libs.junit.test)
+    androidTestImplementation(libs.espresso)
     androidTestImplementation(libs.junit.test.android)
+    androidTestImplementation(libs.compose.ui.test.junit4)
 }

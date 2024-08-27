@@ -19,6 +19,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,15 +29,29 @@ import com.montfel.domain.model.Note
 import com.montfel.presentation.R
 import com.montfel.presentation.notes.components.NoteCard
 import com.montfel.presentation.theme.NotesTheme
+import com.montfel.presentation.util.TestTags
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotesScreen(
+fun NotesRoute(
     onUpsertNote: (Note?) -> Unit,
 ) {
     val viewModel: NotesViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    NotesScreen(
+        uiState = uiState,
+        onUpsertNote = onUpsertNote,
+        viewModel::onEvent
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NotesScreen(
+    uiState: NotesUiState,
+    onUpsertNote: (Note?) -> Unit,
+    onEvent: (NotesEvent) -> Unit
+) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -56,7 +71,8 @@ fun NotesScreen(
             FloatingActionButton(
                 onClick = { onUpsertNote(null) },
                 contentColor = MaterialTheme.colorScheme.onPrimary,
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.testTag(TestTags.FAB)
             ) {
                 Icon(imageVector = Icons.Default.Add, contentDescription = null)
             }
@@ -77,7 +93,7 @@ fun NotesScreen(
                 NoteCard(
                     note = it,
                     onEdit = onUpsertNote,
-                    onDelete = { note -> viewModel.onEvent(NotesEvent.DeleteNote(note)) }
+                    onDelete = { note -> onEvent(NotesEvent.DeleteNote(note)) }
                 )
             }
         }
@@ -89,7 +105,9 @@ fun NotesScreen(
 private fun NotesScreenPreview() {
     NotesTheme {
         NotesScreen(
-            onUpsertNote = { }
+            uiState = NotesUiState(),
+            onEvent = {},
+            onUpsertNote = {}
         )
     }
 }
