@@ -15,6 +15,10 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @HiltAndroidTest
 class NotesEndToEndTest {
@@ -39,11 +43,28 @@ class NotesEndToEndTest {
     @Test
     fun saveEditAndDeleteNote() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        val newTitle = "Testando título"
-        val newDescription = "Testando descrição"
+
+        val today = Date()
+        val calendar = Calendar.getInstance()
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        val tomorrow = calendar.time
+
+        val formatterDay = SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault())
+        val formatterDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val todayDayFormatted = formatterDay.format(today)
+        val todayDateFormatted = formatterDate.format(today)
+        val tomorrowDayFormatted = formatterDay.format(tomorrow)
+        val tomorrowDateFormatted = formatterDate.format(tomorrow)
+
+        val title = "Testando título"
+        val description = "Testando descrição"
+        val dueDate = todayDayFormatted
+        val dueDateFormatted = todayDateFormatted
+        val editedDueDate = tomorrowDayFormatted
+        val editedDueDateFormatted = tomorrowDateFormatted
         val textAdded = "Editado "
-        val editedTitle = textAdded + newTitle
-        val editedDescription = textAdded + newDescription
+        val editedTitle = textAdded + title
+        val editedDescription = textAdded + description
 
         //Click in FAB to add a note
         composeTestRule
@@ -53,10 +74,21 @@ class NotesEndToEndTest {
         // Add title and description
         composeTestRule
             .onNodeWithTag(TestTags.TITLE_TEXT_FIELD)
-            .performTextInput(newTitle)
+            .performTextInput(title)
         composeTestRule
             .onNodeWithTag(TestTags.DESCRIPTION_TEXT_FIELD)
-            .performTextInput(newDescription)
+            .performTextInput(description)
+
+        // Add due date
+        composeTestRule
+            .onNodeWithTag(TestTags.DUE_DATE_TEXT_FIELD)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(text = dueDate, substring = true)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(context.getString(com.montfel.presentation.R.string.confirm))
+            .performClick()
 
         //Click in save button
         composeTestRule
@@ -65,10 +97,13 @@ class NotesEndToEndTest {
 
         //Check if note was saved
         composeTestRule
-            .onNodeWithText(newTitle)
+            .onNodeWithText(title)
             .assertExists()
         composeTestRule
-            .onNodeWithText(newDescription)
+            .onNodeWithText(description)
+            .assertExists()
+        composeTestRule
+            .onNodeWithText(dueDateFormatted)
             .assertExists()
 
         //Click to edit note
@@ -84,6 +119,17 @@ class NotesEndToEndTest {
             .onNodeWithTag(TestTags.DESCRIPTION_TEXT_FIELD)
             .performTextInput(textAdded)
 
+        // Edit due date
+        composeTestRule
+            .onNodeWithTag(TestTags.DUE_DATE_TEXT_FIELD)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(editedDueDate)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(context.getString(com.montfel.presentation.R.string.confirm))
+            .performClick()
+
         //Click in save button
         composeTestRule
             .onNodeWithText(context.getString(com.montfel.presentation.R.string.save_note))
@@ -95,6 +141,9 @@ class NotesEndToEndTest {
             .assertExists()
         composeTestRule
             .onNodeWithText(editedDescription)
+            .assertExists()
+        composeTestRule
+            .onNodeWithText(editedDueDateFormatted)
             .assertExists()
 
         //Click to delete note
@@ -108,6 +157,9 @@ class NotesEndToEndTest {
             .assertDoesNotExist()
         composeTestRule
             .onNodeWithText(editedDescription)
+            .assertDoesNotExist()
+        composeTestRule
+            .onNodeWithText(editedDueDateFormatted)
             .assertDoesNotExist()
     }
 }
