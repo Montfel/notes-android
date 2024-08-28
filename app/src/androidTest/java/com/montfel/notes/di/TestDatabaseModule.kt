@@ -1,30 +1,32 @@
-package com.montfel.data.di
+package com.montfel.notes.di
 
 import android.content.Context
 import androidx.room.Room
 import com.montfel.data.datasource.local.NotesDatabase
-import com.montfel.data.util.Constants
+import com.montfel.data.di.DatabaseModule
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dagger.hilt.testing.TestInstallIn
 import javax.inject.Singleton
 
 @Module
-@InstallIn(SingletonComponent::class)
-object DatabaseModule {
+@TestInstallIn(
+    components = [SingletonComponent::class],
+    replaces = [DatabaseModule::class]
+)
+internal object TestDatabaseModule {
 
     @Provides
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
     ): NotesDatabase {
-        return Room.databaseBuilder(
+        return Room.inMemoryDatabaseBuilder(
             context,
             NotesDatabase::class.java,
-            Constants.NOTES_DATABASE
-        ).build()
+        ).allowMainThreadQueries().build()
     }
 
     @Provides

@@ -19,7 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.montfel.notes.HiltTestRunner"
+        testInstrumentationRunner = "com.montfel.notes.di.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -83,4 +83,7 @@ dependencies {
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.hilt.testing)
     kspAndroidTest(libs.hilt.compiler)
+    kspAndroidTest(libs.room.compiler)
+    androidTestImplementation(libs.room.ktx)
+    androidTestImplementation(libs.room.runtime)
 }

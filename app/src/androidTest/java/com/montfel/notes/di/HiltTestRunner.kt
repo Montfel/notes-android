@@ -1,4 +1,4 @@
-package com.montfel.notes
+package com.montfel.notes.di
 
 import android.app.Application
 import android.content.Context

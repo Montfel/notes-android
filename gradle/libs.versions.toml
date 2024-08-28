@@ -69,7 +69,6 @@ retrofit-gson-converter = { module = "com.squareup.retrofit2:converter-gson", ve
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-room-paging = { module = "androidx.room:room-paging", version.ref = "room" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [bundles]

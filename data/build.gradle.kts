@@ -52,7 +52,6 @@ dependencies {
     implementation(libs.kotlin.serialization.json)
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
-    implementation(libs.room.paging)
     implementation(libs.room.runtime)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
