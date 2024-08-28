@@ -86,4 +86,5 @@ dependencies {
     kspAndroidTest(libs.room.compiler)
     androidTestImplementation(libs.room.ktx)
     androidTestImplementation(libs.room.runtime)
+    androidTestImplementation(libs.test.rules)
 }

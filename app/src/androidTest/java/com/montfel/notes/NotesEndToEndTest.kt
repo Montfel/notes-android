@@ -1,6 +1,7 @@
 package com.montfel.notes
 
 import android.content.Context
+import android.os.Build
 import androidx.activity.compose.setContent
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
@@ -8,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.rule.GrantPermissionRule
 import com.montfel.presentation.theme.NotesTheme
 import com.montfel.presentation.util.TestTags
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -28,8 +30,15 @@ class NotesEndToEndTest {
     @get:Rule(order = 0)
     val hiltTestRule = HiltAndroidRule(this)
 
-
     @get:Rule(order = 1)
+    val permissionRule: GrantPermissionRule =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            GrantPermissionRule.grant(android.Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            GrantPermissionRule.grant()
+        }
+
+    @get:Rule(order = 2)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     @Before

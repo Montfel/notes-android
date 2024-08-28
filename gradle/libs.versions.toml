@@ -20,6 +20,7 @@ navigation = "2.8.0-rc01"
 okhttp = "4.12.0"
 room = "2.6.1"
 retrofit = "2.11.0"
+testRules = "1.6.1"
 truth = "1.4.2"
 
 [plugins]
@@ -69,6 +70,7 @@ retrofit-gson-converter = { module = "com.squareup.retrofit2:converter-gson", ve
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+test-rules = { module = "androidx.test:rules", version.ref = "testRules" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [bundles]
