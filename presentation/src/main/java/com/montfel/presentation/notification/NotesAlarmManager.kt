@@ -43,7 +43,7 @@ class NotesAlarmManager(private val context: Context) {
 
         return PendingIntent.getBroadcast(
             context,
-            note.id ?: 0,
+            0,
             intent,
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id(libs.plugins.google.services.get().pluginId)
     id(libs.plugins.hilt.get().pluginId)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
@@ -63,6 +64,9 @@ dependencies {
     implementation(libs.core)
     implementation(platform(libs.compose.bom))
     implementation(libs.bundles.compose)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.messaging)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation)
