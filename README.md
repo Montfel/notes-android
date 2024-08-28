@@ -1,34 +1,5 @@
 <h1 align="center">Notes</h1>
 
-<p align="center">
- <a href="#-about">Sobre</a> •
- <a href="#-features">Features</a> •
- <a href="#-layout">Layout</a> • 
- <a href="#-how-to-run">Como executar</a> • 
- <a href="#-tech-stack">Tech Stack</a> • 
- <a href="#-author">Author</a>
-</p>
-
-## 💻 Sobre
-
-
-
----
-
-## ⚙ Features
-
-
-
----
-
-## 🎨 Layout
-
-| First screen                                                                                                          | Second screen                                                                                                               |
-|-----------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------|
-| a | b |
-
----
-
 ## 🚀 Como executar
 
 ### Pré-requisitos
@@ -45,7 +16,7 @@
   - Acesse a pasta `server` do projeto
   - Execute o comando `java -jar pushnotificationsfcm.jar -port=8080` no terminal para subir o servidor
 - Abra o emulador Android
-- Logue com uma conta do Google no emulador
+- Execute o app no emulador
 
 ---
 
@@ -55,11 +26,11 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 #### Linguagem
 
-- **[Kotlin](https://kotlinlang.org/)**
+- **Kotlin**
 
 #### Framework
 
-- **[Android](https://www.android.com/)**
+- **Android**
 
 #### Arquitetura
 
@@ -68,12 +39,13 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 #### Libraries
 
-- **[Hilt](https://dagger.dev/hilt/)**
-- **[Retrofit](https://square.github.io/retrofit/)**
-- **[Jetpack Compose](https://developer.android.com/jetpack/compose)**
-- **[Firebase](https://firebase.google.com/)**
-- **[Room](https://developer.android.com/training/data-storage/room)**
-- **[Compose Navigation](https://developer.android.com/develop/ui/compose/navigation)**
+- **Hilt**
+- **Retrofit**
+- **Flow**
+- **Jetpack Compose**
+- **Firebase**
+- **Room**
+- **Compose Navigation**
 
 ---
 
