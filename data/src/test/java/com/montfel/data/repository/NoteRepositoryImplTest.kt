@@ -32,7 +32,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun `when calls upsertNote`() {
+    fun `upsertNote should call upsertNote on noteDao with correct NoteEntity`() {
         runTest {
             val noteEntity = NoteEntity(
                 id = 0,
@@ -55,7 +55,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun `when calls deleteNote`() {
+    fun `deleteNote should call deleteNote on noteDao with correct NoteEntity`() {
         runTest {
             val noteEntity = NoteEntity(
                 id = 0,
@@ -78,7 +78,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun `when calls getNoteById`() {
+    fun `getNoteById should return Note when noteDao returns corresponding NoteEntity`() {
         runTest {
             val id = 0
             val noteEntity = NoteEntity(
@@ -103,7 +103,7 @@ class NoteRepositoryImplTest {
     }
 
     @Test
-    fun `when calls getAllNotes`() {
+    fun `getAllNotes should return flow of list of Note when noteDao returns a flow of list of NoteEntity`() {
         runTest {
             val id = 0
             val notesEntity = listOf(

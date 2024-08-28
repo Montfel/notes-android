@@ -6,7 +6,5 @@ import retrofit2.http.POST
 
 interface FcmService {
     @POST("/send")
-    suspend fun sendNotification(
-        @Body body: SendNotificationDto
-    )
+    suspend fun sendNotification(@Body sendNotificationDto: SendNotificationDto)
 }
