@@ -15,8 +15,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import com.montfel.presentation.R
-import com.montfel.presentation.util.minusOneDay
-import com.montfel.presentation.util.toUTCLong
+import com.montfel.presentation.util.toUTC
+import com.montfel.presentation.util.toLongWithTimeZero
 import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -28,20 +28,20 @@ fun DatePickerDialogComponent(
     val datePickerState = rememberDatePickerState(
         selectableDates = object : SelectableDates {
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                return utcTimeMillis >= Date().toUTCLong().minusOneDay()
+                return utcTimeMillis.toUTC() >= Date().toLongWithTimeZero()
             }
         }
-    )
-    val confirmEnabled by remember {
-        derivedStateOf { datePickerState.selectedDateMillis != null }
-    }
+            )
+            val confirmEnabled by remember {
+                derivedStateOf { datePickerState.selectedDateMillis != null }
+            }
 
-    DatePickerDialog(
-        colors = DatePickerDefaults.colors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-        ),
-        onDismissRequest = onCancel,
-        confirmButton = {
+            DatePickerDialog(
+                colors = DatePickerDefaults.colors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
+                onDismissRequest = onCancel,
+                confirmButton = {
             TextButton(
                 onClick = { datePickerState.selectedDateMillis?.let(onConfirm) },
                 enabled = confirmEnabled

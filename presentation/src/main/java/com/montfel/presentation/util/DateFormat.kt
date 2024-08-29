@@ -13,18 +13,31 @@ fun Long.toUTCDate(): Date {
         set(Calendar.HOUR_OF_DAY, 0)
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
         timeZone = TimeZone.getDefault()
     }
     return calendar.time
 }
 
-fun Date.toUTCLong(): Long {
-    val utcTimeZone = TimeZone.getTimeZone("UTC")
-    val calendar = Calendar.getInstance(utcTimeZone).apply {
-        time = this@toUTCLong
+fun Date.toLongWithTimeZero(): Long {
+    val calendar = Calendar.getInstance().apply {
+        time = this@toLongWithTimeZero
         set(Calendar.HOUR_OF_DAY, 0)
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    return calendar.time.time
+}
+
+fun Long.toUTC(): Long {
+    val utcTimeZone = TimeZone.getTimeZone("UTC")
+    val calendar = Calendar.getInstance(utcTimeZone).apply {
+        time = Date(this@toUTC)
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
         timeZone = TimeZone.getDefault()
     }
     return calendar.time.time
@@ -38,11 +51,11 @@ fun Long.minusOneDay(): Long {
     return calendar.time.time
 }
 
-fun Date.formatDate(): String {
-    val calendar = Calendar.getInstance(Locale.getDefault()).apply { time = this@formatDate }
-    val date = calendar.time
+fun Date.formatDate(dateFormat: String): String {
+    return SimpleDateFormat(dateFormat, Locale.getDefault()).format(this@formatDate)
+}
 
-    val simpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-
-    return simpleDateFormat.format(date)
+object DateFormat {
+    const val BRAZILIAN = "dd/MM/yyyy"
+    const val ONLY_DAY = "d"
 }

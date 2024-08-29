@@ -6,10 +6,11 @@ import com.montfel.domain.model.Note
 import com.montfel.domain.usecase.GetNoteByIdUseCase
 import com.montfel.domain.usecase.UpsertNoteUseCase
 import com.montfel.presentation.notification.NotesAlarmManager
+import com.montfel.presentation.util.DateFormat
 import com.montfel.presentation.util.formatDate
-import com.montfel.presentation.util.minusOneDay
+import com.montfel.presentation.util.toLongWithTimeZero
+import com.montfel.presentation.util.toUTC
 import com.montfel.presentation.util.toUTCDate
-import com.montfel.presentation.util.toUTCLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -56,7 +57,7 @@ class UpsertNoteViewModel @Inject constructor(
                 it.copy(
                     title = note.title,
                     description = note.description,
-                    dueDate = note.dueDate.toUTCDate().formatDate()
+                    dueDate = note.dueDate.toUTCDate().formatDate(DateFormat.BRAZILIAN)
                 )
             }
         }
@@ -65,7 +66,7 @@ class UpsertNoteViewModel @Inject constructor(
     private fun onUpsertNote() {
         val titleSuccessful = uiState.value.title.isNotBlank()
         val dueDateSuccessful =
-            uiState.value.dueDate.isNotBlank() && dueTimestamp >= Date().toUTCLong().minusOneDay()
+            uiState.value.dueDate.isNotBlank() && dueTimestamp >= Date().toLongWithTimeZero()
 
         if (titleSuccessful && dueDateSuccessful) {
             val note = Note(
@@ -108,12 +109,12 @@ class UpsertNoteViewModel @Inject constructor(
     }
 
     private fun onDueDateChange(dueTimestamp: Long) {
-        this.dueTimestamp = dueTimestamp
+        this.dueTimestamp = dueTimestamp.toUTC()
 
         _uiState.update {
             it.copy(
-                dueDate = dueTimestamp.toUTCDate().formatDate(),
-                dueDateSuccessful = dueTimestamp >= Date().toUTCLong().minusOneDay()
+                dueDate = dueTimestamp.toUTCDate().formatDate(DateFormat.BRAZILIAN),
+                dueDateSuccessful = dueTimestamp.toUTC() >= Date().toLongWithTimeZero()
             )
         }
     }

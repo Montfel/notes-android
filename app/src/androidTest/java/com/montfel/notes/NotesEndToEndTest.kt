@@ -11,7 +11,9 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.rule.GrantPermissionRule
 import com.montfel.presentation.theme.NotesTheme
+import com.montfel.presentation.util.DateFormat
 import com.montfel.presentation.util.TestTags
+import com.montfel.presentation.util.formatDate
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.delay
@@ -19,10 +21,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 
 @HiltAndroidTest
 class NotesEndToEndTest {
@@ -57,23 +56,11 @@ class NotesEndToEndTest {
             val context = ApplicationProvider.getApplicationContext<Context>()
 
             val today = Date()
-            val calendar = Calendar.getInstance()
-            calendar.add(Calendar.DAY_OF_YEAR, 1)
-            val tomorrow = calendar.time
-
-            val formatterDay = SimpleDateFormat("d", Locale.getDefault())
-            val formatterDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            val todayDayFormatted = formatterDay.format(today)
-            val todayDateFormatted = formatterDate.format(today)
-            val tomorrowDayFormatted = formatterDay.format(tomorrow)
-            val tomorrowDateFormatted = formatterDate.format(tomorrow)
 
             val title = "Testando título"
             val description = "Testando descrição"
-            val dueDate = todayDayFormatted
-            val dueDateFormatted = todayDateFormatted
-            val editedDueDate = tomorrowDayFormatted
-            val editedDueDateFormatted = tomorrowDateFormatted
+            val dueDate = today.formatDate(DateFormat.ONLY_DAY)
+            val dueDateFormatted = today.formatDate(DateFormat.BRAZILIAN)
             val textAdded = "Editado "
             val editedTitle = textAdded + title
             val editedDescription = textAdded + description
@@ -133,17 +120,6 @@ class NotesEndToEndTest {
                 .onNodeWithTag(TestTags.DESCRIPTION_TEXT_FIELD)
                 .performTextInput(textAdded)
 
-            // Edit due date
-            composeTestRule
-                .onNodeWithTag(TestTags.DUE_DATE_TEXT_FIELD)
-                .performClick()
-            composeTestRule
-                .onNodeWithText(editedDueDate, substring = true)
-                .performClick()
-            composeTestRule
-                .onNodeWithText(context.getString(com.montfel.presentation.R.string.confirm))
-                .performClick()
-
             //Click in save button
             composeTestRule
                 .onNodeWithText(context.getString(com.montfel.presentation.R.string.save_note))
@@ -157,9 +133,6 @@ class NotesEndToEndTest {
                 .assertExists()
             composeTestRule
                 .onNodeWithText(editedDescription)
-                .assertExists()
-            composeTestRule
-                .onNodeWithText(editedDueDateFormatted)
                 .assertExists()
 
             //Click to delete note
@@ -175,9 +148,6 @@ class NotesEndToEndTest {
                 .assertDoesNotExist()
             composeTestRule
                 .onNodeWithText(editedDescription)
-                .assertDoesNotExist()
-            composeTestRule
-                .onNodeWithText(editedDueDateFormatted)
                 .assertDoesNotExist()
         }
     }

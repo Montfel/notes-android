@@ -4,6 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.montfel.domain.model.Note
+import com.montfel.presentation.util.DateFormat
 import com.montfel.presentation.util.formatDate
 import com.montfel.presentation.util.toUTCDate
 import org.junit.Rule
@@ -37,6 +38,6 @@ class NotesScreenUiTest {
 
         composeTestRule.onNodeWithText(note.title).assertExists()
         composeTestRule.onNodeWithText(note.description).assertExists()
-        composeTestRule.onNodeWithText(note.dueDate.toUTCDate().formatDate()).assertExists()
+        composeTestRule.onNodeWithText(note.dueDate.toUTCDate().formatDate(DateFormat.BRAZILIAN)).assertExists()
     }
 }

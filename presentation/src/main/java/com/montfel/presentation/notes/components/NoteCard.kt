@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.montfel.domain.model.Note
 import com.montfel.presentation.theme.NotesTheme
+import com.montfel.presentation.util.DateFormat
 import com.montfel.presentation.util.TestTags
 import com.montfel.presentation.util.formatDate
 import com.montfel.presentation.util.toUTCDate
@@ -68,7 +69,7 @@ fun NoteCard(
                 )
 
                 Text(
-                    text = note.dueDate.toUTCDate().formatDate(),
+                    text = note.dueDate.toUTCDate().formatDate(DateFormat.BRAZILIAN),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
