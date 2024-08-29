@@ -36,6 +36,10 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 #### Libraries
 
+- **LiveData**
+  -  LiveData foi utilizado para observar e gerenciar o estado da UI de forma reativa. Ele permite que os componentes da interface do usuário observem mudanças nos dados e atualizem a UI automaticamente, garantindo que a interface seja sempre consistente com os dados subjacentes.
+-  **Flow**
+   -  Eu também criei uma branch separada ([using-coroutines-flow](https://github.com/Montfel/notes-android/tree/using-coroutines-flow)) onde usei Flow em vez de LiveData, pois o Flow oferece um gerenciamento de estado mais eficiente e flexível, como também lida melhor com operações assíncronas complexas, integra-se melhor com coroutines e com o Compose, e permite um controle maior sobre a emissão e manipulação dos dados.
 - **Hilt**
   - Hilt foi escolhido como o framework de injeção de dependências para simplificar a criação de componentes dependentes e melhorar a modularidade do código, facilitando a troca de implementações, especialmente em testes.
 - **Retrofit**
