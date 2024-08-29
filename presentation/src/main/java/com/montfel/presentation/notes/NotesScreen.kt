@@ -18,13 +18,13 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.montfel.domain.model.Note
 import com.montfel.presentation.R
 import com.montfel.presentation.notes.components.NoteCard
@@ -36,19 +36,19 @@ fun NotesRoute(
     onUpsertNote: (Note?) -> Unit,
 ) {
     val viewModel: NotesViewModel = hiltViewModel()
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.observeAsState()
 
     NotesScreen(
         uiState = uiState,
         onUpsertNote = onUpsertNote,
-        viewModel::onEvent
+        onEvent = viewModel::onEvent
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesScreen(
-    uiState: NotesUiState,
+    uiState: NotesUiState?,
     onUpsertNote: (Note?) -> Unit,
     onEvent: (NotesEvent) -> Unit
 ) {
@@ -89,12 +89,14 @@ fun NotesScreen(
                 .padding(8.dp)
                 .fillMaxSize()
         ) {
-            items(uiState.notes) {
-                NoteCard(
-                    note = it,
-                    onEdit = onUpsertNote,
-                    onDelete = { note -> onEvent(NotesEvent.DeleteNote(note)) }
-                )
+            uiState?.notes?.let { notes ->
+                items(notes) {
+                    NoteCard(
+                        note = it,
+                        onEdit = onUpsertNote,
+                        onDelete = { note -> onEvent(NotesEvent.DeleteNote(note)) }
+                    )
+                }
             }
         }
     }
