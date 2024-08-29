@@ -7,7 +7,7 @@ import com.montfel.data.util.Constants
 @Entity(tableName = Constants.NOTE_TABLE)
 data class NoteEntity(
     @PrimaryKey
-    val id: Int? = null,
+    val id: Long? = null,
     val title: String,
     val description: String,
     val dueDate: Long

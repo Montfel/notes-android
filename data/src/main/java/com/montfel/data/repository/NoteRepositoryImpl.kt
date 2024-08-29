@@ -18,12 +18,12 @@ class NoteRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getNoteById(noteId: Int): Note {
+    override suspend fun getNoteById(noteId: Long): Note {
         return noteDao.getNoteById(noteId).toNote()
     }
 
-    override suspend fun upsertNote(note: Note) {
-        noteDao.upsertNote(note.toNoteEntity())
+    override suspend fun upsertNote(note: Note): Long {
+        return noteDao.upsertNote(note.toNoteEntity())
     }
 
     override suspend fun deleteNote(note: Note) {

@@ -42,7 +42,7 @@ import com.montfel.presentation.util.TestTags
 
 @Composable
 fun UpsertNoteRoute(
-    noteId: Int? = null,
+    noteId: Long? = null,
     onBack: () -> Unit
 ) {
     val viewModel: UpsertNoteViewModel = hiltViewModel()
@@ -71,7 +71,7 @@ fun UpsertNoteRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UpsertNoteScreen(
-    noteId: Int?,
+    noteId: Long?,
     onBack: () -> Unit,
     uiState: UpsertNoteUiState,
     onEvent: (UpsertNoteEvent) -> Unit

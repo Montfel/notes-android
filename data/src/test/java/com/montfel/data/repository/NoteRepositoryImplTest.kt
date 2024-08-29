@@ -34,20 +34,21 @@ class NoteRepositoryImplTest {
     @Test
     fun `upsertNote should call upsertNote on noteDao with correct NoteEntity`() {
         runTest {
+            val id = 0L
             val noteEntity = NoteEntity(
-                id = 0,
+                id = id,
                 title = "definitiones",
                 description = "blandit",
                 dueDate = 4174
             )
             val note = Note(
-                id = 0,
+                id = id,
                 title = "definitiones",
                 description = "blandit",
                 dueDate = 4174
             )
 
-            coEvery { noteDao.upsertNote(noteEntity) } just runs
+            coEvery { noteDao.upsertNote(noteEntity) } returns id
             repository.upsertNote(note)
 
             coVerify { noteDao.upsertNote(noteEntity) }
@@ -80,7 +81,7 @@ class NoteRepositoryImplTest {
     @Test
     fun `getNoteById should return Note when noteDao returns corresponding NoteEntity`() {
         runTest {
-            val id = 0
+            val id = 0L
             val noteEntity = NoteEntity(
                 id = id,
                 title = "definitiones",
@@ -105,7 +106,7 @@ class NoteRepositoryImplTest {
     @Test
     fun `getAllNotes should return flow of list of Note when noteDao returns a flow of list of NoteEntity`() {
         runTest {
-            val id = 0
+            val id = 0L
             val notesEntity = listOf(
                 NoteEntity(
                     id = id,

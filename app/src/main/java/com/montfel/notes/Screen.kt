@@ -9,6 +9,6 @@ sealed interface Screen {
 
     @Serializable
     data class UpsertNote(
-        val noteId: Int? = null
+        val noteId: Long? = null
     ) : Screen
 }

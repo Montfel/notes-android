@@ -6,8 +6,6 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
-import io.mockk.just
-import io.mockk.runs
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -27,14 +25,15 @@ class UpsertNoteUseCaseImplTest {
     @Test
     fun `when upsertNoteUseCase is called then must call repository`() {
         runTest {
+            val id = 0L
             val note = Note(
-                id = 0,
+                id = id,
                 title = "quo",
                 description = "docendi",
                 dueDate = 7002
             )
 
-            coEvery { notesRepository.upsertNote(any()) } just runs
+            coEvery { notesRepository.upsertNote(any()) } returns id
 
             useCase(note)
 

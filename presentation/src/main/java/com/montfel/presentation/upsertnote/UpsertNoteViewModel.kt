@@ -35,7 +35,7 @@ class UpsertNoteViewModel @Inject constructor(
     val uiEvent = _uiEvent.receiveAsFlow()
 
     private var dueTimestamp: Long = 0L
-    private var currentNoteId: Int? = null
+    private var currentNoteId: Long? = null
 
     fun onEvent(event: UpsertNoteEvent) {
         when (event) {
@@ -47,7 +47,7 @@ class UpsertNoteViewModel @Inject constructor(
         }
     }
 
-    private fun getNoteById(noteId: Int) {
+    private fun getNoteById(noteId: Long) {
         viewModelScope.launch {
             val note = getNoteByIdUseCase(noteId)
             currentNoteId = noteId
@@ -69,7 +69,7 @@ class UpsertNoteViewModel @Inject constructor(
             uiState.value.dueDate.isNotBlank() && dueTimestamp >= Date().toLongWithTimeZero()
 
         if (titleSuccessful && dueDateSuccessful) {
-            val note = Note(
+            var note = Note(
                 id = currentNoteId,
                 title = uiState.value.title,
                 description = uiState.value.description,
@@ -77,9 +77,13 @@ class UpsertNoteViewModel @Inject constructor(
             )
 
             viewModelScope.launch {
-                upsertNoteUseCase(note)
+                upsertNoteUseCase(note).also { noteId ->
+                    if (noteId != -1L) {
+                        note = note.copy(id = noteId)
+                    }
 
-                notesAlarmManager.setUpAlarm(note)
+                    notesAlarmManager.setUpAlarm(note)
+                }
 
                 _uiEvent.send(UpsertNoteUiEvent.OnSaveNote)
             }

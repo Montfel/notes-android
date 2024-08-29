@@ -7,7 +7,7 @@ import javax.inject.Inject
 internal class GetNoteByIdUseCaseImpl @Inject constructor(
     private val noteRepository: NoteRepository
 ): GetNoteByIdUseCase {
-    override suspend fun invoke(noteId: Int): Note {
+    override suspend fun invoke(noteId: Long): Note {
         return noteRepository.getNoteById(noteId = noteId)
     }
 }

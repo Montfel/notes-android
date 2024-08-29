@@ -48,10 +48,11 @@ class NoteDaoInstrumentedTest {
                 dueDate = 9905
             )
 
-            noteDao.upsertNote(note)
+            val result = noteDao.upsertNote(note)
 
             val notes = noteDao.getAllNotes().first()
 
+            assertThat(result).isEqualTo(note.id)
             assertThat(notes).contains(note)
         }
     }
@@ -62,22 +63,24 @@ class NoteDaoInstrumentedTest {
             val newNote = NoteEntity(
                 id = 0,
                 title = "New note",
-                description = "eius",
+                description = "new",
                 dueDate = 9905
             )
 
             val oldNote = NoteEntity(
                 id = 0,
                 title = "Old note",
-                description = "eius",
-                dueDate = 9905
+                description = "old",
+                dueDate = 9906
             )
 
-            noteDao.upsertNote(newNote)
-            noteDao.upsertNote(oldNote)
+            val resultNewNote = noteDao.upsertNote(newNote)
+            val resultOldNote = noteDao.upsertNote(oldNote)
 
             val notes = noteDao.getAllNotes().first()
 
+            assertThat(resultNewNote).isEqualTo(newNote.id)
+            assertThat(resultOldNote).isEqualTo(-1)
             assertThat(notes).hasSize(1)
             assertThat(notes).contains(oldNote)
         }

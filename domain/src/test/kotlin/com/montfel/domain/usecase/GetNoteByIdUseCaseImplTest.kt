@@ -25,7 +25,7 @@ class GetNoteByIdUseCaseImplTest {
     @Test
     fun `when getNoteByIdUseCase is called then must call repository`() {
         runTest {
-            val id = 0
+            val id = 0L
             val note = Note(
                 id = id,
                 title = "quo",
