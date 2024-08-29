@@ -49,10 +49,14 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - **Room**
   - Room foi utilizado para persistir os dados localmente, garantindo que as notas fossem armazenadas de forma segura e eficiente no dispositivo do usuário.
 - **Firebase Cloud Messaging**
-  Firebase Cloud Messaging (FCM) foi integrado ao aplicativo para gerenciar o envio de notificações push. Utilizei FCM para garantir que os usuários sejam alertados quando uma nota estiver próxima da data de vencimento. Quando o backend local identifica essa proximidade, ele aciona uma notificação via FCM, que é então entregue ao dispositivo do usuário. Essa abordagem garante que as notificações sejam enviadas de maneira confiável e oportuna.
+  - Firebase Cloud Messaging foi integrado tanto ao aplicativo, como ao back-end local para gerenciar o envio de notificações push. Utilizei FCM para garantir que os usuários sejam alertados às 9 horas da manhã do dia anterior ao vencimento da nota. Quando o back-end local recebe a requisição do dispositivo, ele aciona uma notificação via FCM, que é então entregue ao dispositivo do usuário.
 - **Alarm Manager**
-  - AlarmManager foi utilizado para agendar lembretes locais no dispositivo do usuário. Com o AlarmManager, configurei alarmes que disparam notificações locais quando uma nota está próxima da data de vencimento. Essa solução garante que o usuário receba alertas mesmo sem conexão com a internet, complementando as notificações push enviadas via Firebase Cloud Messaging (FCM).
----
+  - O AlarmManager foi utilizado para agendar um alarme no dispositivo do usuário, que será acionado às 9 horas da manhã do dia anterior ao vencimento da nota, sempre que uma nota for criada ou editada. Com isso, ao disparar o AlarmManager, é capturado o evento no Broadcast Receiver e em seguida é feita a requisição para o back-end local acionar o Firebase Cloud Messaging.
+ 
+#### Outros
+
+- **Back-end local usando Ktor**
+  - Desenvolvi um back-end local utilizando Ktor para poder adequar ao Firebase Cloud Messaging HTTP v1, pois ele é necessário para guardar a chave da API do Firebase e servir como intermediário para solicitar as notificações para o FCM.
 
 ## 🦸 Autor
 
