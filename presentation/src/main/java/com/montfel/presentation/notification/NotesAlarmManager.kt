@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.montfel.domain.model.Note
-import com.montfel.presentation.util.minusOneDay
+import com.montfel.presentation.util.toPreviousDayAt9AM
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -18,7 +18,7 @@ class NotesAlarmManager(private val context: Context) {
         runCatching {
             alarmManager.setExact(
                 AlarmManager.RTC_WAKEUP,
-                note.dueDate.minusOneDay(),
+                note.dueDate.toPreviousDayAt9AM(),
                 pendingIntent
             )
         }.getOrElse {

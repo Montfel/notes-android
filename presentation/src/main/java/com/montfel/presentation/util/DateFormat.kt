@@ -43,10 +43,11 @@ fun Long.toUTC(): Long {
     return calendar.time.time
 }
 
-fun Long.minusOneDay(): Long {
+fun Long.toPreviousDayAt9AM(): Long {
     val calendar = Calendar.getInstance().apply {
-        time = Date(this@minusOneDay)
+        time = Date(this@toPreviousDayAt9AM)
         set(Calendar.DAY_OF_YEAR, get(Calendar.DAY_OF_YEAR) - 1)
+        set(Calendar.HOUR_OF_DAY, 9)
     }
     return calendar.time.time
 }
