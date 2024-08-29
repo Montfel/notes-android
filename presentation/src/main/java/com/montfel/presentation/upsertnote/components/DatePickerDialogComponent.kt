@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import com.montfel.presentation.R
 import com.montfel.presentation.util.toUTC
@@ -65,6 +66,12 @@ fun DatePickerDialogComponent(
             }
         }
     ) {
-        DatePicker(state = datePickerState)
+        DatePicker(
+            state = datePickerState,
+            colors = DatePickerDefaults.colors(
+                todayContentColor = Color.Black,
+                todayDateBorderColor = Color.Black,
+            )
+        )
     }
 }
