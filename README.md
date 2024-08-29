@@ -18,8 +18,6 @@
 - Abra o emulador Android
 - Execute o app no emulador
 
----
-
 ## 🛠 Tech Stack
 
 As seguintes ferramentas foram usadas na construção do projeto:
