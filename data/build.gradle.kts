@@ -55,8 +55,6 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson.converter)
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.bundles.okhttp)
 
     testImplementation(libs.junit.test)
     testImplementation(libs.kotlin.coroutines.test)

@@ -5,8 +5,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
@@ -23,7 +21,6 @@ internal object ClientModule {
             .Builder()
             .baseUrl(RETROFIT_BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(createOkHttpClient())
             .build()
     }
 
@@ -31,16 +28,5 @@ internal object ClientModule {
     @Singleton
     fun provideFcmService(retrofit: Retrofit): FcmService {
         return retrofit.create(FcmService::class.java)
-    }
-
-    private fun createOkHttpClient(): OkHttpClient {
-        return OkHttpClient
-            .Builder()
-            .addNetworkInterceptor(
-                HttpLoggingInterceptor().apply {
-                    level = HttpLoggingInterceptor.Level.BODY
-                }
-            )
-            .build()
     }
 }
