@@ -77,7 +77,6 @@ dependencies {
     debugImplementation(libs.compose.ui.test.manifest)
 
     testImplementation(libs.junit.test)
-    androidTestImplementation(libs.espresso)
     androidTestImplementation(libs.junit.test.android)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)

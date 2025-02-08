@@ -3,7 +3,6 @@ activity = "1.9.1"
 androidGradlePlugin = "8.5.2"
 compose = "2024.08.00"
 core = "1.13.1"
-espresso = "3.6.1"
 firebase = "33.2.0"
 googleServices = "4.4.2"
 hilt = "2.51.1"
@@ -20,6 +19,7 @@ navigation = "2.8.0-rc01"
 room = "2.6.1"
 retrofit = "2.11.0"
 testRules = "1.6.1"
+testRunner = "1.6.2"
 truth = "1.4.2"
 
 [plugins]
@@ -44,7 +44,6 @@ compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview"
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 core = { module = "androidx.core:core-ktx", version.ref = "core" }
-espresso = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebase" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging" }
@@ -68,6 +67,7 @@ room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
 room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
 test-rules = { module = "androidx.test:rules", version.ref = "testRules" }
+test-runner = { module = "androidx.test:runner", version.ref = "testRunner" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 [bundles]
